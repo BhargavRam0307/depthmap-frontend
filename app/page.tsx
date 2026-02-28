@@ -164,7 +164,7 @@ export default function Home() {
       //     setUploadProgress(percent);
       //   },
       // });
-      const response = await axios.post("https://bhargav0307-depth-reconstruction-api.hf.space", formData, {
+      const response = await axios.post("https://bhargav0307-depth-reconstruction-api.hf.space/predict", formData, {
         onUploadProgress: (progressEvent) => {
           const percent = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 100));
           setUploadProgress(percent);
