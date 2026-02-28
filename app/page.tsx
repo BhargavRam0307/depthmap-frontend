@@ -158,7 +158,13 @@ export default function Home() {
       setImages([]);
 
       // Step 3: API call
-      const response = await axios.post("http://10.129.30.28:8000/predict", formData, {
+      // const response = await axios.post("http://10.129.30.28:8000/predict", formData, {
+      //   onUploadProgress: (progressEvent) => {
+      //     const percent = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 100));
+      //     setUploadProgress(percent);
+      //   },
+      // });
+      const response = await axios.post("https://bhargav0307-depth-reconstruction-api.hf.space", formData, {
         onUploadProgress: (progressEvent) => {
           const percent = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 100));
           setUploadProgress(percent);
