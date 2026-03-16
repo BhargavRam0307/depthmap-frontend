@@ -1,0 +1,42 @@
+# =========================================
+# PYTHON & MACHINE LEARNING
+# =========================================
+.venv/
+env/
+venv/
+depthgpu/
+__pycache__/
+*.py[cod]
+
+# CRITICAL: Ignore massive model weights!
+*.pth
+*.pt
+checkpoints/
+model/
+pvcnn models/
+
+# =========================================
+# NEXT.JS & NODE
+# =========================================
+node_modules/
+.next/
+out/
+build/
+coverage/
+.DS_Store
+*.pem
+*.log*
+.env*
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+
+# =========================================
+# IGNORE BACKEND (Hosted on Hugging Face)
+# =========================================
+backend/
+ngrok.exe
+requirements.txt
+package.json
+package-lock.json
+*.pdf
