@@ -241,7 +241,10 @@ function Result3DCard({ result, index }: { result: Result3D; index: number }) {
 }
 
 // ── Main App ──────────────────────────────────────────────────────────────────
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_BASE = await fetch("https://bhargav0307-depth-reconstruction-api.hf.space/predict", {
+  method: "POST",
+  body: formData,
+});
 
 export default function Home() {
   const [messages,         setMessages]         = useState<Message[]>([]);
