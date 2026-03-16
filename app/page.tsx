@@ -42,23 +42,36 @@ function PointCloudViewer({ pc }: { pc: PointCloud }) {
   const [zScale,    setZScale]    = useState(0.4);
   const [pointSize, setPointSize] = useState(2);
 
-  const { x, y, z, colors } = useMemo(() => {
-    const n      = pc.count;
+  const { x, y, z, colors, renderedCount } = useMemo(() => {
+    // 1. Detect if the user is on a mobile device (screen width < 768px)
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    
+    // 2. Set a safe limit for mobile GPUs (e.g., 30,000 points), otherwise render all
+    const MAX_POINTS = isMobile ? 30000 : pc.count;
+    
+    // 3. Calculate the "step" to evenly skip points (Decimation)
+    const step = Math.max(1, Math.ceil(pc.count / MAX_POINTS));
+    const n = Math.ceil(pc.count / step);
+
     const xArr: number[] = new Array(n);
     const yArr: number[] = new Array(n);
     const zArr: number[] = new Array(n);
     const cols: string[] = new Array(n);
 
-    for (let i = 0; i < n; i++) {
-      xArr[i] =  pc.xyz[i * 3];
-      yArr[i] = -pc.xyz[i * 3 + 1];             
-      zArr[i] = -pc.xyz[i * 3 + 2] * zScale;    
+    let j = 0;
+    for (let i = 0; i < pc.count; i += step) {
+      if (j >= n) break; // Safety check
+      xArr[j] =  pc.xyz[i * 3];
+      yArr[j] = -pc.xyz[i * 3 + 1];             
+      zArr[j] = -pc.xyz[i * 3 + 2] * zScale;    
       const r = Math.round(pc.rgb[i * 3]     * 255);
       const g = Math.round(pc.rgb[i * 3 + 1] * 255);
       const b = Math.round(pc.rgb[i * 3 + 2] * 255);
-      cols[i] = `rgb(${r},${g},${b})`;
+      cols[j] = `rgb(${r},${g},${b})`;
+      j++;
     }
-    return { x: xArr, y: yArr, z: zArr, colors: cols };
+    
+    return { x: xArr, y: yArr, z: zArr, colors: cols, renderedCount: j };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pc, zScale]);
 
